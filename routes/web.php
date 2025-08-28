@@ -15,7 +15,13 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
+// Secure logout (POST only)
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Handle GET /logout gracefully (do not log out, just redirect)
+Route::get('/logout', function () {
+    return redirect()->route('login');
+});
 
 // Dashboard (protected)
 Route::middleware('auth')->group(function () {

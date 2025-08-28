@@ -15,5 +15,11 @@
         <li class="nav-item mx-2"><a class="nav-link text-white" href="/about">About</a></li>
         <li class="nav-item mx-2"><a class="nav-link text-white" href="/services">Services</a></li>
         <li class="nav-item mx-2"><a class="nav-link text-white" href="/contact">Contact</a></li>
+         <li class="nav-item mx-2">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="btn btn-outline-light">Logout</button>
+            </form>
+        </li>
     </ul>
 </nav>
