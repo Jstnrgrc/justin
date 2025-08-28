@@ -1,23 +1,29 @@
 <?php
 
+
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Seed departments first
+        $this->call([
+            DepartmentSeeder::class,
+        ]);
 
+        // Now you can safely create users with department_id = 1
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'first_name' => 'Test',
+            'middle_name' => null,
+            'last_name' => 'User',
+            'ext_name' => null,
+            'email' => 'stewart19@example.com',
+            'password' => bcrypt('password'),
+            'department_id' => 1,
         ]);
     }
 }

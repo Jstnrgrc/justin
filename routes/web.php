@@ -2,56 +2,24 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
+// Redirect root to login
 Route::get('/', fn() => redirect()->route('login'));
 
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
+// Authentication Routes
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
 
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Route::get('/', [StudentController::class, 'index']);
-//Route::get('/students', [StudentController::class, 'index']);
-//Route::get('/students/add', [StudentController::class, 'store']);
-//Route::get('/students/update/{sid}/{name}', [StudentController::class, 'update']);
-
-//Route::get('/students/delete/{sid}', [StudentController::class, 'delete']);
-
-
-
-//Route::get('/', function () {
-//   return 'home';
-//});
-
-//Route::get('/home', function () {
-//    return 'home';
-//});
-
-//Route::get('/about', function () {
-//   return 'about';
-//});
-
-//Route::get('/contact', function () {
-//    return 'contact';
-//});
+// Dashboard (protected)
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});

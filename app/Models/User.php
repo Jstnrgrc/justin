@@ -18,10 +18,16 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    'first_name',
+    'middle_name',
+    'last_name',
+    'ext_name',
+    'email',
+    'password',
+    'department_id',
+    // REMOVE 'name' if present
+];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,4 +51,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    // app/Models/User.php
+
+    public function getFullNameAttribute()
+    {
+        $name = $this->first_name;
+        if ($this->middle_name) {
+            $name .= ' ' . $this->middle_name;
+        }
+        $name .= ' ' . $this->last_name;
+        if ($this->ext_name) {
+            $name .= ', ' . $this->ext_name;
+        }
+        return $name;
+    }
+
 }
