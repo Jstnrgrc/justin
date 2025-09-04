@@ -24,11 +24,9 @@ class User extends Authenticatable
     'ext_name',
     'email',
     'password',
-    'department_id',
-    // REMOVE 'name' if present
-];
+    'department_id',];
 
-
+    
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -66,4 +64,7 @@ class User extends Authenticatable
         return $name;
     }
 
+    public function department(){
+        return $this->belongsTo(Department::class);
+    }
 }

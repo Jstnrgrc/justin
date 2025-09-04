@@ -26,6 +26,6 @@ Route::get('/logout', function () {
 // Dashboard (protected)
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+        return view('dashboard');})->name('dashboard');
+    Route::get('/users', [StudentController::class, 'index'])->name('users.index');
 });
