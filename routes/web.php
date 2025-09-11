@@ -21,6 +21,10 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 //Delete User
 Route::delete('/users/{id}', [StudentController::class, 'destroy'])->name('users.destroy');
 
+//Edit user
+Route::get('/users/{id}/edit', [StudentController::class, 'edit'])->name('users.edit');
+
+
 // Handle GET /logout gracefully (do not log out, just redirect)
 Route::get('/logout', function () {
     return redirect()->route('login');

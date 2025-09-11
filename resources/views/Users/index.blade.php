@@ -38,17 +38,20 @@
                             @endif
                         </td>
                         <td>
-                            <div class="d-flex justify-content-center gap-2">
-                                <a href="#" class="btn btn-outline-primary px-3">
+                            <form action="{{ route('users.edit', $user->id) }}" method="GET" class="d-inline">
+                                @csrf
+                                <div class="d-flex justify-content-center gap-2">
+                                <button type="submit" class="btn btn-outline-primary px-3 me-2">
                                     <i class="bi bi-pencil-square me-1"></i> Edit
-                                </a>
-            
+                                </button>
+                            </form>
+                
                                 <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button href="#" class="btn btn-outline-danger px-3"
                                     onclick="return confirm('Are you sure you want to delete this user?')">
-                                    
+
                                     <i class="bi bi-trash me-1"></i> Delete
                                     </button>
                                 </form>
