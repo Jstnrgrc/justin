@@ -18,6 +18,9 @@ Route::post('/register', [RegisterController::class, 'register']);
 // Secure logout (POST only)
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+//Delete User
+Route::delete('/users/{id}', [StudentController::class, 'destroy'])->name('users.destroy');
+
 // Handle GET /logout gracefully (do not log out, just redirect)
 Route::get('/logout', function () {
     return redirect()->route('login');

@@ -24,9 +24,15 @@ class User extends Authenticatable
     'ext_name',
     'email',
     'password',
-    'department_id',];
+    'department_id',
+    'Stat',
+    ];
 
-    
+    public function getStatusLabelAttribute()
+{
+    return $this->stat ? 'Active' : 'Inactive';
+}
+
     /**
      * The attributes that should be hidden for serialization.
      *

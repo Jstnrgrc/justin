@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title', 'Laravel Dashboard')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
     <style>
         body {
             padding-top: 70px;
-            /* Match navbar height */
         }
 
         .sidebar {
@@ -28,14 +28,52 @@
         }
 
         .sidebar.collapsed {
-            width: 0;
-            padding: 0;
-            overflow: hidden;
-            border: none;
+            width: 70px;
+            padding: 1rem 0.5rem;
         }
 
-        .sidebar.expanded {
-            left: 0;
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            padding: 10px 12px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #e2e6ea;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #d1d5db;
+            font-weight: bold;
+        }
+
+        .sidebar .icon {
+            font-size: 1.4rem;
+            width: 2rem;
+            text-align: center;
+        }
+
+        .sidebar .label {
+            margin-left: 0.5rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .label,
+        .sidebar.collapsed .sidebar-title {
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
         }
 
         .content {
@@ -45,24 +83,7 @@
         }
 
         .content.expanded {
-            margin-left: 0;
-        }
-
-        .navbar-nav .nav-link {
-            font-size: 1.1rem;
-            padding: 12px 20px;
-            border-radius: 10px;
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-
-        .navbar-nav .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-        }
-
-        .navbar-nav .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.25);
-            font-weight: bold;
+            margin-left: 70px;
         }
 
         .navbar {
@@ -74,36 +95,27 @@
             font-size: 2rem;
         }
 
-        /* === MOBILE RESPONSIVE === */
         @media (max-width: 768px) {
             .sidebar {
                 left: -280px;
-                /* Hide sidebar off-screen */
                 height: calc(100vh - 70px);
-                border-right: 1px solid #dee2e6;
-                padding: 1rem;
                 width: 280px;
-                overflow-y: auto;
                 transition: left 0.3s ease;
             }
 
             .sidebar.collapsed {
                 left: -280px;
-                /* still hidden */
             }
 
             .sidebar.expanded {
                 left: 0;
-                /* slide in */
             }
 
             .content {
                 margin-left: 0;
                 padding: 1.5rem;
-                transition: margin-left 0.3s ease;
             }
 
-            /* Dark overlay when sidebar is open */
             body.sidebar-open::before {
                 content: "";
                 position: fixed;
@@ -131,40 +143,48 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Sidebar Toggle Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleBtn = document.getElementById('sidebarToggle');
-            const sidebar = document.querySelector('.sidebar');
-            const content = document.querySelector('.content');
-            const body = document.body;
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        const content = document.querySelector('.content');
+        const body = document.body;
 
-            toggleBtn.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    // Mobile: slide sidebar in/out
-                    sidebar.classList.toggle('expanded');
-                    body.classList.toggle('sidebar-open');
-                } else {
-                    // Desktop: collapse sidebar width
-                    sidebar.classList.toggle('collapsed');
-                    content.classList.toggle('expanded');
-                }
-            });
+        // Restore sidebar state from localStorage
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (isCollapsed && window.innerWidth > 768) {
+            sidebar.classList.add('collapsed');
+            content.classList.add('expanded');
+        }
 
-            // Close sidebar on clicking outside (mobile only)
-            document.addEventListener('click', function(e) {
-                if (
-                    window.innerWidth <= 768 &&
-                    sidebar.classList.contains('expanded') &&
-                    !sidebar.contains(e.target) &&
-                    e.target !== toggleBtn
-                ) {
-                    sidebar.classList.remove('expanded');
-                    body.classList.remove('sidebar-open');
-                }
-            });
+        toggleBtn.addEventListener('click', function () {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('expanded');
+                body.classList.toggle('sidebar-open');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                content.classList.toggle('expanded');
+
+                // Save state
+                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+            }
         });
-    </script>
+
+        // Close sidebar on outside click (mobile only)
+        document.addEventListener('click', function (e) {
+            if (
+                window.innerWidth <= 768 &&
+                sidebar.classList.contains('expanded') &&
+                !sidebar.contains(e.target) &&
+                e.target !== toggleBtn
+            ) {
+                sidebar.classList.remove('expanded');
+                body.classList.remove('sidebar-open');
+            }
+        });
+    });
+</script>
+
 </body>
 
 </html>
