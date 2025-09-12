@@ -9,7 +9,6 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul class="mb-0">
@@ -20,15 +19,14 @@
         </div>
     @endif
 
-    <form action="" method="POST">
+    {{-- Submit to the same edit route using POST --}}
+    <form action="{{ route('users.edit', $user->id) }}" method="POST">
         @csrf
-        @method('PUT')
 
         <div class="mb-3">
             <label>First Name</label>
             <input type="text" name="first_name" class="form-control" value="{{ old('first_name', $user->first_name) }}" required>
         </div>
-
 
         <div class="mb-3">
             <label>Middle Name</label>
@@ -49,8 +47,6 @@
             <label>Email</label>
             <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
         </div>
-
-        
 
         <div class="mb-3">
             <label>Role</label>
@@ -84,5 +80,3 @@
         <a href="{{ route('users.index') }}" class="btn btn-secondary">Cancel</a>
     </form>
 @endsection
-
-
